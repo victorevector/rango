@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^rango/', include('rango.urls')), #sends 'rango/' string to rango/urls.py, which then sends request to rango/view.py, which dispatches index()
 )
