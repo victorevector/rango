@@ -10,7 +10,9 @@ from rango.models import Category, Page
 def populate():
     python_cat = add_cat('Python')
     python_cat.views = 128
+    python_cat.save()
     python_cat.likes = 64
+    python_cat.save()
 
     add_page(cat=python_cat,
         title="Official Python Tutorial",
@@ -26,7 +28,9 @@ def populate():
 
     django_cat = add_cat("Django")
     django_cat.views = 64
+    django_cat.save()
     django_cat.likes = 32
+    django_cat.save()
 
     add_page(cat=django_cat,
         title="Official Django Tutorial",
@@ -42,7 +46,9 @@ def populate():
 
     frame_cat = add_cat("Other Frameworks")
     frame_cat.views = 32
+    frame_cat.save()
     frame_cat.likes = 16
+    frame_cat.save()
 
     add_page(cat=frame_cat,
         title="Bottle",
