@@ -6,16 +6,31 @@
 
 	<body>
 		<h1>Rango says... hello world!</h1>
-
-		{% if categories %}
-		<ul>
-			{% for category in categories %}
-			<li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
-			{% endfor %}
-		</ul>
-		{% else %}
-		<strong>There are no categories present.</strong>
-		{% endif %}
+		
+		<h2>Most liked categories</h2>
+			<p>
+				{% if categories_mostliked %}
+				<ul>
+					{% for category in categories_mostliked %}
+					<li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
+					{% endfor %}
+				</ul>
+				{% else %}
+				<strong>There are no categories present.</strong>
+				{% endif %}
+			</p>
+		<h2>Most viwed categories</h2>
+		<p>
+			{% if categories_mostviewed %}
+			<ul>
+				{% for category in categories_mostviewed %}
+				<li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			<strong>There are no categories present.</strong>
+			{% endif %}
+		</p>
 
 		<a href="/rango/about/">About</a>
 	</body>
