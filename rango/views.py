@@ -61,6 +61,9 @@ def category(request, category_name_slug):
 		#We get here if we didn't find the specified category.
 		#don't do anything-- the template displays the 'no category' message for us.
 		pass
+		context_dict = {'category':category_name_slug}
+		return render(request,'rango/error.html',context_dict)
+
 
 	#go render the response and return it to the client.
 	return render(request,'rango/category.html',context_dict)
