@@ -105,3 +105,7 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/' #user uploaded files will be availbe from http://.../media/
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #tells Django where uploaded files should be stored on local disk
 
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher', ##default##
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    )
