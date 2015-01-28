@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from rango.models import Category
 from rango.models import Page
 from rango.forms import CategoryForm
+from rango.forms import PageForm
 
 def index(request):
 	#Query the database for a list of ALL categories currently stored
@@ -38,6 +39,7 @@ def category(request, category_name_slug):
 		#if we can't, the .get() method raises a DoesNotExist exception
 		#so the .get()method returns one model instance or raises an exception
 		category = Category.objects.get(slug=category_name_slug)
+		context_dict['category_name_slug']=category_name_slug
 		context_dict['category_name'] = category.name
 		#eg. context_dict['category_name'] = 'Python' => {'category_name': 'Python'}
 
@@ -61,7 +63,7 @@ def category(request, category_name_slug):
 		#We get here if we didn't find the specified category.
 		#don't do anything-- the template displays the 'no category' message for us.
 		pass
-		context_dict = {'category':category_name_slug}
+		context_dict = {'category':category_name_slug, 'category_name_slug':category_name_slug}
 		return render(request,'rango/error.html',context_dict)
 
 
@@ -91,3 +93,26 @@ def add_category(request):
 	#bad form (or form details), no form supplied...
 	#render the form with error messages (if any).
 	return render(request, 'rango/add_category.html', {'form':form})
+
+def add_page(request,category_name_slug):
+	try:
+		cat = Category.objects.get(slug=category_name_slug)
+	except Category.DoesNotExist:
+		cat=None
+
+	if request.method == 'POST':
+		form = PageForm(request.POST)
+		if form.is_valid():
+			if cat:
+				page=form.save(commit=False)
+				page.category = cat
+				page.views = 0
+				page.save()
+				#call views.category == will render the relevant category page
+				return category(request, category_name_slug)
+		else:
+			print form.errors
+	else:
+		form = PageForm()
+	context_dict = {'form':form, 'category':cat}
+	return render(request, 'rango/add_page.html', context_dict)
