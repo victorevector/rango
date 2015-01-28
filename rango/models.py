@@ -26,9 +26,12 @@ class Page(models.Model):
 		
 class UserProfile(models.Model):
 	#this line is required. it links UserProfile to a User model instance.
+	#this way, UserProfile can be 'attached' to the User object
+	#in other words, a UserProfile that has a user
+	# just like how your facebook or gmail user profile is separate from the user account itself
 	user = models.OneToOneField(User)
 
-	#the additional attributes we wish to include.
+	#the additional attributes we wish to include. Fields can be left blank
 	website = models.URLField(blank=True)
 	picture = models.ImageField(upload_to='profile_images', blank=True)
 
