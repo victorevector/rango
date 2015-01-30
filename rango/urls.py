@@ -8,5 +8,6 @@ urlpatterns = patterns('',
     url(r'^category/(<category_name_url>)/add_page/$', views.add_page, name='add_page'),
     url(r'^category/(?P<category_name_slug>[\w\-]+)/$', views.category, name='category'),
     url(r'^register/$', views.register, name='register'),
+    url(r'^restricted/', views.restricted, name='restricted'),
     )
 #url() invokes views.category if regular expression matches

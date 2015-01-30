@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
 	#Query the database for a list of ALL categories currently stored
@@ -171,4 +172,9 @@ def register(request):
 		'rango/register.html',
 		{'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
+
 		
+
+@login_required
+def restricted(request):
+	return HttpResponse("Since you're logged in, you can see this text!")
