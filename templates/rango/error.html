@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Error</title>
-    </head>
+{% extends 'base.html' %}
+{% load staticfiles %}
 
-    <body>
+{% block title %} Error! {% endblock %}
+
+{% block body_block %}
         <h1>"{{category}}" does not exist!</h1>
-        <p><a href='/rango/'>Home Page</a></p>
-        <p><a href='/rango/add_category'>Add {{category}} to website</a></p>
-    </body>
-</html>
-
+{% endblock %}
