@@ -176,9 +176,6 @@ def register(request):
 		'rango/register.html',
 		{'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
-
-		
-
 def user_login(request):
 	#if the request is a HTTP post, try to pull out the relevant information
 	if request.method == 'POST':
@@ -218,7 +215,7 @@ def user_login(request):
 
 @login_required
 def restricted(request):
-	return HttpResponse("Since you're logged in, you can see this text!")
+	return render(request, 'rango/restricted.html', {})
 
 @login_required
 def user_logout(request):
