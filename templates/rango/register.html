@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Rango</title>
-    </head>
+{% extends 'base.html' %}
+{% load staticfiles %}
 
-    <body>
+{% block title %} Register {% endblock %}
+
+{% block body_block %}
         <h1>Register with Rango</h1>
 
         {% if registered %}
             Rango says: <strong>thank you for registering!</strong>
-            <a href='/rango/'>Return to the homepage.</a><br/>
+            <a href='{% url 'index' %}'>Return to the homepage.</a><br/>
         {% else %}
             Rango says: <strong>register here!</strong><br/>
             <form id='user_form' method='post' action='/rango/register/' enctype='multipart/form-data'>
@@ -21,7 +20,6 @@
               <input type='submit' name='submit' value='Register'/>
           </form>
         {% endif %}
-    </body>
-</html>
+{% endblock %}
 
 <!-- the if registered conditonal is advantageous here because it allows us to create a dual function template: 1) a page that supplies registration feedback. it will tell you if you have succesfully registered. 2) a page that supplies the registration form  -->
