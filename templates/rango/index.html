@@ -14,25 +14,26 @@
 		<h2>Most liked categories</h2>
 			<p>
 				{% if categories_mostliked %}
-				<ul>
-					{% for category in categories_mostliked %}
-					<li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
-					{% endfor %}
-				</ul>
+					<ul>
+						{% for category in categories_mostliked %}
+						<li><a href='{% url 'category' category.slug %}'>{{ category.name }}</a></li>
+						{% endfor %}
+					</ul>
 				{% else %}
-				<strong>There are no categories present.</strong>
+					<strong>There are no categories present.</strong>
 				{% endif %}
 			</p>
+
 		<h2>Most viwed categories</h2>
 		<p>
 			{% if categories_mostviewed %}
-			<ul>
-				{% for category in categories_mostviewed %}
-				<li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
-				{% endfor %}
-			</ul>
+				<ul>
+					{% for category in categories_mostviewed %}
+						<li><a href='{% url 'category' category.slug %}'>{{ category.name }}</a></li>
+					{% endfor %}
+				</ul>
 			{% else %}
-			<strong>There are no categories present.</strong>
+				<strong>There are no categories present.</strong>
 			{% endif %}
 		</p>
 
