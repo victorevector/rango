@@ -42,7 +42,7 @@ def index(request):
 	else:
 		#cookies last_visit doesnt exist, so flag that it should be set.
 		reset_last_visit_time = True
-
+		#this allows us to display visit count in template
 		context_dict['visits'] = visits
 
 		#obtain our response object early so we can add cookie information
