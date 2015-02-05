@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
+from datetime import datetime
 
 def index(request):
 	#Query the database for a list of ALL categories currently stored
@@ -18,12 +19,46 @@ def index(request):
 		'categories_mostviewed': categories_mostviewed,
 		}
 
+	#get the number of visits to the site.
+	# we use the COOKIES.get() function to obtain the visits cookies 
+	# if the cookies exists, the value returned is casted to an integer
+	# if the cookie doesnt exist we default to zero and cast that
+	visits = int(request.COOKIES.get('visits', '1')) #get(keyword, default value if value not found)
+	
+	reset_last_visit_time = False
+	response = render(request, 'rango/index.html', context_dict)
+	#Does the cookie last_visit exist?
+	if 'last_visit' in request.COOKIES:
+		#Yes it does! get the cookie's value.
+		last_visit = request.COOKIES['last_visit']
+		#cast the value to a python date/time object
+		last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+
+		#if it's been more than a day since the last visit...
+		if (datetime.now()-last_visit_time).days > 0:
+			visits = visits + 1
+			#... flag that the cookie last visit needs to be updated.
+			reset_last_visit_time = True
+	else:
+		#cookies last_visit doesnt exist, so flag that it should be set.
+		reset_last_visit_time = True
+
+		context_dict['visits'] = visits
+
+		#obtain our response object early so we can add cookie information
+		response = render(request, 'rango/index.html', context_dict)
+
+	if reset_last_visit_time:
+		response.set_cookie('last_visit', datetime.now())
+		response.set_cookie('visits',visits)
+
+	#return response back to the user, updating any cookies that need changed.
+	return response
+
 	# Return a rendered response to send to the client
 	# We make use of the shortcut function to make our lives easier.
 	# Note that the first parameter is the template we wish to use.
-	return render(request, 'rango/index.html', context_dict)
-
-	# return HttpResponse("Rango says: Hello world! <br/> <a href='/rango/about'>About</a>")
+	# return render(request, 'rango/index.html', context_dict)
 
 def about(request):
 	context_dict = {'name': "Johnny Depp"}
@@ -121,7 +156,6 @@ def add_page(request,category_name_slug):
 	return render(request, 'rango/add_page.html', context_dict)
 
 def register(request):
-
 	#a boolean value for telling the template whether the registration was successful.
 	#set to False initially. Code changes value to True when registration succeeds.
 	registered = False
