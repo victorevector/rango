@@ -8,6 +8,7 @@
 	<img src = "{% static "images/rango_about.jpg" %}" alt = "Picture of rango" />
 	<p> Rango is {{name}}. </p>
 	<p> Back to <a href = '{% url 'index' %}'> Rango </a></p>
+    <p> You have visited this website <strong>{{visit_count}}</strong> times! </p>
 {% endblock %}
                            
 

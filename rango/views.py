@@ -102,6 +102,15 @@ def index(request):
 
 def about(request):
 	context_dict = {'name': "Johnny Depp"}
+
+	visits = request.session.get('visits')
+	if visits:
+		count = visits
+	else:
+		count = 0
+
+	context_dict['visit_count'] = count
+
 	return render(request, 'rango/about.html', context_dict)
 
 	# return HttpResponse("Rango says here is the about page. </br> <a href ='/rango/'> Index </a>")
