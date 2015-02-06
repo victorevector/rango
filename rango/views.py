@@ -18,43 +18,83 @@ def index(request):
 		'categories_mostliked': category_list,
 		'categories_mostviewed': categories_mostviewed,
 		}
+#############SERVER SIDE COOKIE SESSION####################
+	#True=> Update cookie values for 'visits' & 'last_visit_time'
+	#False=> 
+	reset_last_visit_time = False
+	
+	#Get user's visit count
+	visits = request.session.get('visits')
+	#if user has not visited website before...
+	if not visits:
+		#set visits to 1
+		visits = 1
 
+	#Get user's last_visit_time 	
+	last_visit = request.session.get('last_visit')
+	#if user has visited this website before...
+	if last_visit:
+		#format user's last visit date and time
+		last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+		# if user has visited/reloaded website again then increase visit count
+		if (datetime.now() - last_visit_time).seconds > 0:
+			visits = visits + 1
+			#Update last visit cookie
+			reset_last_visit_time = True
+	#if user has not visited this website before...update cookies
+	else:
+		reset_last_visit_time = True
+
+	#if we need to update cookies
+	if reset_last_visit_time:
+		request.session['visits'] = visits
+		request.session['last_visit'] = str(datetime.now())
+	#allows django to access visit count in template	
+	context_dict['visits'] = visits
+
+	response = render(request, 'rango/index.html', context_dict)
+	return response
+
+
+
+#############CLIENT SIDE COOKIE SESSION###################
 	#get the number of visits to the site.
 	# we use the COOKIES.get() function to obtain the visits cookies 
 	# if the cookies exists, the value returned is casted to an integer
 	# if the cookie doesnt exist we default to zero and cast that
-	visits = int(request.COOKIES.get('visits', '1')) #get(keyword, default value if value not found)
+	# visits = int(request.COOKIES.get('visits', '1')) #get(keyword, default value if value not found)
 	
-	reset_last_visit_time = False
-	response = render(request, 'rango/index.html', context_dict)
-	#Does the cookie last_visit exist?
-	if 'last_visit' in request.COOKIES:
-		#Yes it does! get the cookie's value.
-		last_visit = request.COOKIES['last_visit']
-		#cast the value to a python date/time object
-		last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+	# reset_last_visit_time = False
+	# response = render(request, 'rango/index.html', context_dict)
+	# #Does the cookie last_visit exist?
+	# if 'last_visit' in request.COOKIES:
+	# 	#Yes it does! get the cookie's value.
+	# 	last_visit = request.COOKIES['last_visit']
+	# 	#cast the value to a python date/time object
+	# 	last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
 
-		#if it's been more than a day since the last visit...
-		if (datetime.now()-last_visit_time).days > 0:
-			visits = visits + 1
-			#... flag that the cookie last visit needs to be updated.
-			reset_last_visit_time = True
-	else:
-		#cookies last_visit doesnt exist, so flag that it should be set.
-		reset_last_visit_time = True
-		#this allows us to display visit count in template
-		context_dict['visits'] = visits
+	# 	#if it's been more than a day since the last visit...
+	# 	if (datetime.now()-last_visit_time).days > 0:
+	# 		visits = visits + 1
+	# 		#... flag that the cookie last visit needs to be updated.
+	# 		reset_last_visit_time = True
+	# else:
+	# 	#cookies last_visit doesnt exist, so flag that it should be set.
+	# 	reset_last_visit_time = True
+	# 	#this allows us to display visit count in template
+	# 	context_dict['visits'] = visits
 
-		#obtain our response object early so we can add cookie information
-		response = render(request, 'rango/index.html', context_dict)
+	# 	#obtain our response object early so we can add cookie information
+	# 	response = render(request, 'rango/index.html', context_dict)
 
-	if reset_last_visit_time:
-		response.set_cookie('last_visit', datetime.now())
-		response.set_cookie('visits',visits)
+	# if reset_last_visit_time:
+	# 	response.set_cookie('last_visit', datetime.now())
+	# 	response.set_cookie('visits',visits)
 
-	#return response back to the user, updating any cookies that need changed.
-	return response
+	# #return response back to the user, updating any cookies that need changed.
+	# return response
 
+##############RESPONSE WITHOUT COOKIES####################################
 	# Return a rendered response to send to the client
 	# We make use of the shortcut function to make our lives easier.
 	# Note that the first parameter is the template we wish to use.
