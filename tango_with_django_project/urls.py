@@ -9,6 +9,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rango/', include('rango.urls')), #sends 'rango/' string to rango/urls.py, which then sends request to rango/view.py, which dispatches index()
+    (r'^accounts/', include('registration.backends.simple.urls')),
 )
 
 #if settings.py has DEBUG set to TRUE, append additional URL matching pattern to 'urlpatterns'
