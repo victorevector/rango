@@ -119,3 +119,5 @@ ACCOUNT_ACTIVATION_DAYS = 7 #one week activation window
 REGISTRATION_AUTO_LOGIN = True #user will be automatically logged in 
 LOGIN_REDIRECT_URL = '/rango/' #the page you want users to arrive at after they succesfully log in
 LOGIN_URL = '/accounts/login/' #users get redirected to this page if they try to access pages that required authentication and they are not logged in
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
