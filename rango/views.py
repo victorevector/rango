@@ -12,12 +12,14 @@ def index(request):
 	#Order the categories by no. likes in descending order
 	#Retrieve the top 5 only- or all if less than 5
 	#Place the list in our context_dict dictionary which will be passed to the template engine
-	category_list = Category.objects.order_by('-likes')[:5] #'-' responsible for descending order
+	categories = Category.objects.order_by('-likes')[:5] #'-' responsible for descending order
 	categories_mostviewed = Category.objects.order_by('-views')[:5]
 	context_dict = {
-		'categories_mostliked': category_list,
+		'categories': categories,
 		'categories_mostviewed': categories_mostviewed,
 		}
+	pages = Page.objects.order_by('-views')[:5]
+	context_dict['pages']=pages
 #############SERVER SIDE COOKIE SESSION####################
 	#True=> Update cookie values for 'visits' & 'last_visit_time'
 	#False=> 
